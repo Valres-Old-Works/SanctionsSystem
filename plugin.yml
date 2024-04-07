@@ -3,3 +3,15 @@ author: ValresMC
 version: 0.0.1
 api: [5.0.0]
 main: Valres\SanctionsSystem
+
+permissions:
+  sanctionssystem.ban.command:
+    default: op
+  sanctionssystem.unban.command:
+    default: op
+  sanctionssystem.mute.command:
+    default: op
+  sanctionssystem.unmute.command:
+    default: op
+  sanctionssystem.kick.command:
+    default: op
