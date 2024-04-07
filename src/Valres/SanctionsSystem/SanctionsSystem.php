@@ -5,6 +5,8 @@ namespace Valres\SanctionsSystem;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\utils\SingletonTrait;
+use Valres\SanctionsSystem\listeners\PlayerChat;
+use Valres\SanctionsSystem\listeners\PlayerJoin;
 use Valres\SanctionsSystem\managers\discord\DiscordManager;
 use Valres\SanctionsSystem\managers\SanctionsManager;
 
@@ -27,6 +29,9 @@ class SanctionsSystem extends PluginBase
         $this->discordManager->init();
 
         $this->sanctionsManager = new SanctionsManager();
+
+        $this->getServer()->getPluginManager()->registerEvents(new PlayerChat(), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new PlayerJoin(), $this);
     }
 
     protected function onLoad(): void
