@@ -1,0 +1,21 @@
+ban-webhook:
+  url: ""
+  embed-title: "SanctionsSystem - New Ban !"
+  embed-content: "{player} has just been banned for {reason} during {time} by {author}."
+
+mute-webhook:
+  url: ""
+  embed-title: "SanctionsSystem - New Mute !"
+  embed-content: "{player} has just been muted for {reason} during {time} by {author}."
+
+kick-webhook:
+  url: ""
+  embed-title: "SanctionsSystem - New Kick !"
+  embed-content: "{player} has just been kicked for {reason} during {time} by {author}."
+
+ban-message: "§cYou have been banned from this server !\nReason : {reason}.\nRemaining time : {remaining}.\nAuthor : {author}."
+ban-broadcast-message: "§cThe player {player} has just been banned for {reason} during {time} by {author}."
+mute-message: "§cYou have been muted from this server !\nReason : {reason}.\nRemaining time : {remaining}.\nAuthor : {author}."
+mute-broadcast-message: "§cThe player {player} has just been muted for {reason} during {time} by {author}."
+kick-message: "§cYou have been kicked from this server !\nReason : {reason}.\nAuthor : {author}."
+kick-broadcast-message: "§cThe player {player} has just been kicked for {reason} by {author}."

@@ -1,0 +1,5 @@
+name: SanctionsSystem
+author: ValresMC
+version: 0.0.1
+api: [5.0.0]
+main: Valres\SanctionsSystem
