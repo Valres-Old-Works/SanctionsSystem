@@ -60,6 +60,7 @@ class BanCommand extends BaseCommand
                 $config->get("ban-message")
             ));
         }
+        SanctionsSystem::getInstance()->discordManager->sendBanEmbed($player, $reason, $time, $sender->getName());
     }
 
     public function getPermission() {}

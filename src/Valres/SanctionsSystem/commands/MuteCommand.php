@@ -30,7 +30,6 @@ class MuteCommand extends BaseCommand
      * @param string $aliasUsed
      * @param array $args
      * @return void
-     * @throws JsonException
      */
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
     {
@@ -60,6 +59,7 @@ class MuteCommand extends BaseCommand
             [$player, $reason, $time, $sender->getName()],
             $config->get("mute-broadcast-message")
         ));
+        SanctionsSystem::getInstance()->discordManager->sendMuteEmbed($player, $reason, $time, $sender->getName());
     }
 
     public function getPermission() {}

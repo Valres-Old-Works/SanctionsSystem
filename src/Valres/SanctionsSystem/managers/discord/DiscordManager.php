@@ -3,6 +3,8 @@
 namespace Valres\SanctionsSystem\managers\discord;
 
 use Valres\SanctionsSystem\libs\DiscordWebhookAPI\Embed;
+use Valres\SanctionsSystem\libs\DiscordWebhookAPI\Message;
+use Valres\SanctionsSystem\libs\DiscordWebhookAPI\Webhook;
 use Valres\SanctionsSystem\SanctionsSystem;
 
 class DiscordManager
@@ -10,77 +12,15 @@ class DiscordManager
     private string $banWebhook = "";
     private string $muteWebhook = "";
     private string $kickWebhook = "";
-    private Embed $banEmbed;
-    private Embed $muteEmbed;
-    private Embed $kickEmbed;
 
     public function init(): void
     {
         $config = SanctionsSystem::getInstance()->getConfig();
 
         $this->banWebhook = $config->get("ban-webhook")["url"];
-        $this->initBanEmbed();
-
         $this->muteWebhook = $config->get("mute-webhook")["url"];
-        $this->initMuteEmbed();
-
         $this->kickWebhook = $config->get("kick-webhook")["url"];
-        $this->initKickEmbed();
 
-    }
-
-    public function initBanEmbed(): void
-    {
-        $config = SanctionsSystem::getInstance()->getConfig();
-
-        $embed = new Embed();
-        $embed->setTitle($config->get("ban-webhook")["embed-title"]);
-        $embed->setFooter("Plugin by ValresMC.");
-        $this->banEmbed = $embed;
-    }
-
-    public function initMuteEmbed(): void
-    {
-        $config = SanctionsSystem::getInstance()->getConfig();
-
-        $embed = new Embed();
-        $embed->setTitle($config->get("mute-webhook")["embed-title"]);
-        $embed->setFooter("Plugin by ValresMC.");
-        $this->muteEmbed = $embed;
-    }
-
-    public function initKickEmbed(): void
-    {
-        $config = SanctionsSystem::getInstance()->getConfig();
-
-        $embed = new Embed();
-        $embed->setTitle($config->get("kick-webhook")["embed-title"]);
-        $embed->setFooter("Plugin by ValresMC.");
-        $this->kickEmbed = $embed;
-    }
-
-    /**
-     * @return Embed
-     */
-    public function getBanEmbed(): Embed
-    {
-        return $this->banEmbed;
-    }
-
-    /**
-     * @return Embed
-     */
-    public function getMuteEmbed(): Embed
-    {
-        return $this->muteEmbed;
-    }
-
-    /**
-     * @return Embed
-     */
-    public function getKickEmbed(): Embed
-    {
-        return $this->kickEmbed;
     }
 
     /**
@@ -105,5 +45,85 @@ class DiscordManager
     public function getKickWebhook(): string
     {
         return $this->kickWebhook;
+    }
+
+    /**
+     * @param string $playerName
+     * @param string $reason
+     * @param string $time
+     * @param string $author
+     * @return void
+     */
+    public function sendBanEmbed(string $playerName, string $reason, string $time, string $author): void
+    {
+        $config = SanctionsSystem::getInstance()->getConfig();
+
+        if($this->banWebhook === "") return;
+
+        $embed = new Embed();
+        $embed->setTitle($config->get("ban-webhook")["title"]);
+        $embed->setDescription(str_replace(
+            ["{player}", "{reason}", "{time}", "{author}"],
+            [$playerName, $reason, $time, $author],
+            $config->get("ban-webhook")["content"]
+        ));
+
+        $webhook = new Webhook($this->banWebhook);
+        $message = new Message();
+        $message->addEmbed($embed);
+        $webhook->send($message);
+    }
+
+    /**
+     * @param string $playerName
+     * @param string $reason
+     * @param string $time
+     * @param string $author
+     * @return void
+     */
+    public function sendMuteEmbed(string $playerName, string $reason, string $time, string $author): void
+    {
+        $config = SanctionsSystem::getInstance()->getConfig();
+
+        if($this->muteWebhook === "") return;
+
+        $embed = new Embed();
+        $embed->setTitle($config->get("mute-webhook")["title"]);
+        $embed->setDescription(str_replace(
+            ["{player}", "{reason}", "{time}", "{author}"],
+            [$playerName, $reason, $time, $author],
+            $config->get("mute-webhook")["content"]
+        ));
+
+        $webhook = new Webhook($this->muteWebhook);
+        $message = new Message();
+        $message->addEmbed($embed);
+        $webhook->send($message);
+    }
+
+    /**
+     * @param string $playerName
+     * @param string $reason
+     * @param string $author
+     * @return void
+     */
+    public function sendKickEmbed(string $playerName, string $reason, string $author): void
+    {
+        $config = SanctionsSystem::getInstance()->getConfig();
+
+        if($this->kickWebhook === "") return;
+
+        $embed = new Embed();
+        $embed->setTitle($config->get("kick-webhook")["title"]);
+        $embed->setDescription(str_replace(
+            ["{player}", "{reason}", "{author}"],
+            [$playerName, $reason, $author],
+            $config->get("kick-webhook")["content"]
+        ));
+
+        $webhook = new Webhook($this->kickWebhook);
+        $message = new Message();
+        $message->addEmbed($embed);
+        $webhook->send($message);
     }
 }
