@@ -9,14 +9,14 @@ use Valres\SanctionsSystem\libs\CortexPE\Commando\BaseCommand;
 use Valres\SanctionsSystem\libs\CortexPE\Commando\exception\ArgumentOrderException;
 use Valres\SanctionsSystem\SanctionsSystem;
 
-class UnbanCommand extends BaseCommand
+class UnmuteCommand extends BaseCommand
 {
     /**
      * @throws ArgumentOrderException
      */
     protected function prepare(): void
     {
-        $this->setPermission("sanctionssystem.unban.command");
+        $this->setPermission("sanctionssystem.unmute.command");
         $this->registerArgument(0, new RawStringArgument("player", false));
     }
 
@@ -27,16 +27,16 @@ class UnbanCommand extends BaseCommand
 
         $player = $args["player"];
 
-        if(!$sanctionsManager->isBanned($player)){
-            $sender->sendMessage($config->get("not-ban-message"));
+        if(!$sanctionsManager->isMuted($player)){
+            $sender->sendMessage($config->get("not-mute-message"));
             return;
         }
 
-        $sanctionsManager->deleteBan($player);
+        $sanctionsManager->deleteMute($player);
         Server::getInstance()->broadcastMessage(str_replace(
             ["{player}", "{author}"],
             [$player, $sender->getName()],
-            $config->get("unban-broadcast-message")
+            $config->get("unmute-broadcast-message")
         ));
     }
 
